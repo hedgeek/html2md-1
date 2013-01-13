@@ -1,0 +1,8 @@
+syntax: regexp
+\.\#.+
+~$
+\.pyc$
+\.pyo$
+\.orig$
+\.rej$
+\.DS_Store
