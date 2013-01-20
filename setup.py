@@ -5,8 +5,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-__author__ = 'Max Arnold <arnold.maxim@gmail.com>'
-__version__ = '0.1'
+from html2md import __version__, __author__
 
 setup(
     name='html2md',
@@ -35,7 +34,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing :: Filters',
         'Topic :: Text Processing :: Markup',
-    ]
+    ],
     packages=[
         'html2md',
     ],
