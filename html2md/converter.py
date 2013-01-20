@@ -7,9 +7,14 @@ from .options import DEFAULT_OPTIONS
 
 class Html2Md(object):
     def __init__(self, options=None):
+        # override options
         self.options = dict(DEFAULT_OPTIONS)
         if options: self.options.update(options)
 
+        # set output buffer
+        self.out = []
+
+        # assign tag handlers
         self.tags = {
             '!doctype': {'cb': self.drop},
             'a': {},
