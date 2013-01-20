@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 try:
     import htmlentitydefs as entities
 except ImportError:
@@ -15,7 +17,7 @@ class Html2Md(object):
         self.out = []
 
         # assign tag handlers
-        self.tags = {
+        self.tags = defaultdict (lambda: self.undefined, {
             '!doctype': {'cb': self.drop},
             'a': {},
             'abbr': {},
@@ -141,7 +143,11 @@ class Html2Md(object):
             'var': {},
             'video': {'cb': self.drop},
             'wbr': {},
-        }
+        })
+
+    def undefined(self):
+        print "WARNING, undefined tag"
+        pass
 
     def ignore(self):
         pass
