@@ -78,12 +78,12 @@ class Html2Md(object):
             'form': {'cb': self.drop},
             'frame': {'cb': self.drop},
             'frameset': {'cb': self.ignore},
-            'h1': {'cb': self.not_implemented},
-            'h2': {'cb': self.not_implemented},
-            'h3': {'cb': self.not_implemented},
-            'h4': {'cb': self.not_implemented},
-            'h5': {'cb': self.not_implemented},
-            'h6': {'cb': self.not_implemented},
+            'h1': {'cb': self.h1},
+            'h2': {'cb': self.h2},
+            'h3': {'cb': self.h3},
+            'h4': {'cb': self.h4},
+            'h5': {'cb': self.h5},
+            'h6': {'cb': self.h6},
             'head': {'cb': self.drop},
             'header': {'cb': self.not_implemented},
             'hgroup': {'cb': self.ignore},
@@ -162,9 +162,31 @@ class Html2Md(object):
     def parse(self):
         for element in self.source.iter():
             self.handle(element)
+        return self.out
 
     def handle(self, element):
         self.tags[element.tag]['cb'](element)
+
+    def hn(self, element, n):
+        self.out.append('#' * n + ' ' + ''.join(element.itertext()))
+
+    def h1(self, element):
+        self.hn(element, 1)
+
+    def h2(self, element):
+        self.hn(element, 2)
+
+    def h3(self, element):
+        self.hn(element, 3)
+
+    def h4(self, element):
+        self.hn(element, 4)
+
+    def h5(self, element):
+        self.hn(element, 5)
+
+    def h6(self, element):
+        self.hn(element, 6)
 
     def not_implemented(self, element):
         print "NOT IMPLEMENTED", element
