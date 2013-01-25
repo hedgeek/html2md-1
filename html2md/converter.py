@@ -5,13 +5,23 @@ try:
 except ImportError:
     from html import entities # Py3k
 
+from lxml import html
+from lxml.etree import ElementTree, ElementBase
+
 from .options import DEFAULT_OPTIONS
 
 class Html2Md(object):
-    def __init__(self, options=None):
+    def __init__(self, source, options=None):
         # override options
         self.options = dict(DEFAULT_OPTIONS)
         if options: self.options.update(options)
+
+        if isinstance(source, (str, unicode)):
+            self.source = self.parse_source_string(source)
+        elif isinstance(source, ElementBase):
+            self.source = ElementTree(source)
+        else:
+            self.source = source # already ElementTree
 
         # set output buffer
         self.out = []
@@ -144,6 +154,17 @@ class Html2Md(object):
             'video': {'cb': self.drop},
             'wbr': {},
         })
+
+    def parse_source_string(self, source):
+        # feel free to override and use custom self.options here
+        return ElementTree(html.fromstring(source))
+
+    def parse(self):
+        for element in self.source.iter():
+            self.handle(element)
+
+    def handle(self, element):
+        pass
 
     def undefined(self):
         print "WARNING, undefined tag"
