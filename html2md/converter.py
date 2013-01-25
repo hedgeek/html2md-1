@@ -27,7 +27,7 @@ class Html2Md(object):
         self.out = []
 
         # assign tag handlers
-        self.tags = defaultdict (lambda: self.undefined, {
+        self.tags = defaultdict (lambda: {'cb': self.undefined}, {
             '!doctype': {'cb': self.drop},
             'a': {'cb': self.not_implemented},
             'abbr': {'cb': self.not_implemented},
