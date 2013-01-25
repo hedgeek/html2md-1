@@ -167,8 +167,13 @@ class Html2Md(object):
     def handle(self, element):
         self.tags[element.tag]['cb'](element)
 
+    def as_text(self, element):
+        return ''.join(element.itertext())
+
+    ###### tag handlers
+
     def hn(self, element, n):
-        self.out.append('#' * n + ' ' + ''.join(element.itertext()))
+        self.out.append(u'%s %s\n' % ('#' * n, self.as_text(element)))
 
     def h1(self, element):
         self.hn(element, 1)
@@ -187,6 +192,8 @@ class Html2Md(object):
 
     def h6(self, element):
         self.hn(element, 6)
+
+    ###### other handlers
 
     def not_implemented(self, element):
         print "NOT IMPLEMENTED", element
