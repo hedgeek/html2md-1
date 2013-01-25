@@ -196,10 +196,10 @@ class Html2Md(object):
     ###### other handlers
 
     def not_implemented(self, element):
-        print "NOT IMPLEMENTED", element
+        print 'NOT IMPLEMENTED', element
 
     def undefined(self, element):
-        print "WARNING, undefined tag"
+        print 'WARNING, undefined tag', element
 
     def ignore(self, element):
         pass
