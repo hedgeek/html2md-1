@@ -164,7 +164,9 @@ class Html2Md(object):
             self.handle(element)
 
     def handle(self, element):
-        pass
+        handler = self.tags[element.tag].get('cb')
+        if handler:
+            handler()
 
     def undefined(self):
         print "WARNING, undefined tag"
