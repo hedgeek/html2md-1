@@ -6,7 +6,7 @@ except ImportError:
     from html import entities # Py3k
 
 from lxml import html
-from lxml.etree import ElementTree, ElementBase
+from lxml.etree import Element, ElementTree, ElementBase
 
 from .options import DEFAULT_OPTIONS
 
@@ -160,7 +160,7 @@ class Html2Md(object):
         return ElementTree(html.fromstring(source))
 
     def parse(self):
-        for element in self.source.iter():
+        for element in self.source.iter(tag=Element):
             self.handle(element)
         return self.out
 
