@@ -114,7 +114,7 @@ class Html2Md(object):
             'optgroup': {'cb': self.drop},
             'option': {'cb': self.drop},
             'output': {'cb': self.drop},
-            'p': {'cb': self.not_implemented},
+            'p': {'cb': self.p},
             'param': {'cb': self.drop},
             'pre': {'cb': self.not_implemented},
             'progress': {'cb': self.drop},
@@ -192,6 +192,9 @@ class Html2Md(object):
 
     def h6(self, element):
         self.hn(element, 6)
+
+    def p(self, element):
+        self.out.append('\n')
 
     ###### other handlers
 
