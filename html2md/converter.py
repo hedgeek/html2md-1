@@ -162,7 +162,7 @@ class Html2Md(object):
     def parse(self):
         for element in self.source.iter(tag=Element):
             self.handle(element)
-        return self.out
+        return ''.join(self.out)
 
     def handle(self, element):
         self.tags[element.tag]['cb'](element)

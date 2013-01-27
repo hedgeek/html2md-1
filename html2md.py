@@ -26,8 +26,8 @@ def main():
         document = urlopen(args.source).read()
 
     # TODO: coding
-    print Html2Md(document).parse()
+    return Html2Md(document).parse()
 
 
 if __name__ == "__main__":
-    main()
+    print main()
