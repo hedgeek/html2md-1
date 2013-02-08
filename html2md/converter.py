@@ -1,4 +1,5 @@
 from collections import defaultdict
+from cStringIO import StringIO
 
 try:
     import htmlentitydefs as entities
@@ -6,7 +7,6 @@ except ImportError:
     from html import entities # Py3k
 
 from lxml import html
-from lxml.etree import Element, ElementTree, ElementBase
 
 from .options import DEFAULT_OPTIONS
 
@@ -16,12 +16,7 @@ class Html2Md(object):
         self.options = dict(DEFAULT_OPTIONS)
         if options: self.options.update(options)
 
-        if isinstance(source, (str, unicode)):
-            self.source = self.parse_source_string(source)
-        elif isinstance(source, ElementBase):
-            self.source = ElementTree(source)
-        else:
-            self.source = source # already ElementTree
+        self.source = source
 
         # set output buffer
         self.out = []
@@ -155,12 +150,13 @@ class Html2Md(object):
             'wbr': {'cb': self.not_implemented},
         })
 
-    def parse_source_string(self, source):
+    def get_iterator(self, source):
         # feel free to override and use custom self.options here
-        return ElementTree(html.fromstring(source))
+        return html.etree.iterwalk(html.parse(StringIO(source)))
 
     def parse(self):
-        for element in self.source.iter(tag=Element):
+        for event, element in self.get_iterator(self.source):
+            if not isinstance(element.tag, (str, unicode)): continue
             self.handle(element)
         return ''.join(self.out)
 
@@ -208,4 +204,4 @@ class Html2Md(object):
         pass
 
     def drop(self, element):
-        pass
+        element.drop_tree()
