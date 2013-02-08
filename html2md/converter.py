@@ -24,7 +24,7 @@ class Html2Md(object):
         # assign tag handlers
         self.tags = defaultdict (lambda: {'cb': self.undefined}, {
             '!doctype': {'cb': self.drop},
-            'a': {'cb': self.not_implemented},
+            'a': {'cb': self.a},
             'abbr': {'cb': self.not_implemented},
             'acronym': {'cb': self.not_implemented},
             'address': {'cb': self.not_implemented},
@@ -194,6 +194,9 @@ class Html2Md(object):
 
     def p(self, element):
         self.out.append('\n')
+
+    def a(self, element):
+        self.out.append('[%s](%s)' % (self.as_text(element), element.attrib.get('href')))
 
     ###### other handlers
 
