@@ -16,7 +16,7 @@ class Html2Md(object):
         self.options = dict(DEFAULT_OPTIONS)
         if options: self.options.update(options)
 
-        self.source = source
+        self.tree = self.parse_source(source)
 
         # set output buffer
         self.out = []
@@ -150,13 +150,16 @@ class Html2Md(object):
             'wbr': {'cb': self.not_implemented},
         })
 
-    def get_iterator(self, source):
-        # feel free to override and use custom self.options here
-        return html.etree.iterwalk(html.parse(StringIO(source)))
+    def parse_source(self, source):
+        return html.parse(StringIO(source))
+
+    def iterate(self):
+        for event, element in html.etree.iterwalk(self.tree):
+            if isinstance(element.tag, (str, unicode)):
+                yield element
 
     def parse(self):
-        for event, element in self.get_iterator(self.source):
-            if not isinstance(element.tag, (str, unicode)): continue
+        for element in self.iterate():
             self.handle(element)
         return ''.join(self.out)
 
