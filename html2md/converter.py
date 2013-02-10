@@ -161,6 +161,20 @@ class Html2Md(object):
     def parse(self):
         for element in self.iterate():
             self.handle(element)
+        return self.postprocess()
+
+    def deduplicate_newlines(self):
+        length = len(self.out)
+        if length:
+            last = self.out[-1]
+            for i in xrange(length-2, -1, -1):
+                if last == self.out[i] == '\n':
+                    del self.out[i]
+                else:
+                    last = self.out[i]
+
+    def postprocess(self):
+        self.deduplicate_newlines()
         return ''.join(self.out)
 
     def handle(self, element):
