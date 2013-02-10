@@ -1,8 +1,7 @@
-.#.+
-.pyc
-.pyo
-.orig
-.rej
+*.pyc
+*.pyo
+*.orig
+*.rej
 .DS_Store
 dist/
 build/
